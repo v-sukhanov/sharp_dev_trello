@@ -11,7 +11,7 @@ export const List = () => {
 	const [creatingNewList, setCreatingNewList] = useState(false);
 	const [newListName, setNewListName] = useState('');
 
-	const board = useAppSelector(selectBoard(id ?? ''))
+	const board = useAppSelector((state) => selectBoard(state, id ?? ''))
 	const {addList, removeList} = useAppActions()
 
 	const createNewListHandle = () => {
@@ -55,7 +55,7 @@ export const List = () => {
 				creatingNewList &&
                 <div>
                     <div className="pt-10 pb-5 text-sm">
-                        What shall we call the board?
+                        What shall we call the list?
                     </div>
                     <input onKeyDown={e => e.key === 'Enter' && createNewListHandle()} value={newListName} onChange={(e) => setNewListName(e.target.value)} className="text-black w-full border rounded p-2" type="text"/>
                     <div className="mt-5 flex justify-end gap-5">
@@ -71,9 +71,17 @@ export const List = () => {
 		</div>
 		{
 			board?.lists.map(list => {
-				return <div key={list.id} className="relative w-[300px] text-center border shadow p-5 rounded cursor-pointer  hover:bg-gray-100 transition-all">
+				return <div key={list.id} className="relative w-[300px] border shadow p-5 rounded">
 					<AiFillCloseCircle onClick={e => handleRemoveList(e, list.id)} className="absolute top-[-5px] right-[-5px] hover:scale-110"></AiFillCloseCircle>
-					{list.name}
+					<div>
+						{list.name}
+					</div>
+					<div className="mt-5  flex gap-2">
+						<input onKeyDown={e => e.key === 'Enter' && createNewListHandle()} onChange={(e) => setNewListName(e.target.value)} className="text-black w-full border rounded p-2" type="text"/>
+						<button className="h-[42px] rounded px-2 bg-amber-500 ">
+							Add
+						</button>
+					</div>
 				</div>
 			})
 		}
