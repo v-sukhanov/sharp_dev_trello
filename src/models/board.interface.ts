@@ -3,7 +3,7 @@
 export interface IBoard {
 	id: string;
 	name: string;
-	lists: IBoardListItem[];
+	lists: IBoardList[];
 }
 
 export interface IBoardList {
